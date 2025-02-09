@@ -15,6 +15,14 @@
             "jinja": true,
             "justMyCode": true,
             "cwd": "${workspaceFolder}/realtime_client"
+        },
+        {
+            "name": "Realtime AI Client",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/realtime_client/app/python_client.py",
+            "console": "integratedTerminal",
+            "justMyCode": false
         }
     ]
 } 
