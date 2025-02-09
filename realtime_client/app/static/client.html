@@ -1,0 +1,42 @@
+<!-- realtime_client/app/static/client.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" href="/static/images/favicon-48.png">
+    <title>Realtime AI Assistant with WebRTC</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+    <h1>Realtime AI Assistant</h1>
+    <div id="controls">
+        <button id="startBtn">Start Connection</button>
+        <button id="stopBtn" disabled>Stop Connection</button>
+        <button id="toggleTranscriptBtn">Toggle Transcript</button>
+        <button id="toggleMessageStatusBtn">Toggle Message Status</button>
+        <button id="toggleOutputAudioBtn">Toggle Output Audio</button>
+        <div id="status">Status: Disconnected</div>
+    </div>
+    <!-- Audio element for playing remote audio stream -->
+    <div id="audioContainer">
+        <audio id="remoteAudio" autoplay controls></audio>
+        <!-- New button added after the player controls to toggle microphone -->
+        <button id="toggleMicPlayer" class="mic-button">
+            <i class="material-icons">mic</i>
+        </button>
+    </div>
+    <!-- ===== Changed structure: transcript and messageStatus now wrapped in a flex container ===== -->
+    <div id="flex-container">
+        <div id="transcript"></div>
+        <div id="messageStatus"></div>
+    </div>
+
+    <!-- Include the client JavaScript -->
+    <script src="/static/client.js"></script>
+</body>
+
+</html>

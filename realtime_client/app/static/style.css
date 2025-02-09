@@ -1,0 +1,190 @@
+/* Global Body styles */
+body {
+    font-family: Arial, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Controls area */
+#controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: nowrap;
+}
+
+/* Button Styling */
+button {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 20px;
+    margin: 5px 10px 5px 5px;
+    border: none;
+    border-radius: 5px;
+    background: #007bff;
+    color: white;
+    cursor: pointer;
+    height: 48px;
+}
+
+button:disabled {
+    background: #6c757d;
+}
+
+/* Status display */
+#status {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* Flex container for transcript and message status */
+#flex-container {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    height: calc(100vh - 250px); /* Adjusts full screen minus the controls and header */
+    margin-top: 10px;
+}
+
+/* Transcript and Message Status common styles */
+#transcript,
+#messageStatus {
+    flex: 1;
+    border: 1px solid #ddd;
+    padding: 15px;
+    overflow-y: auto;
+    border-radius: 5px;
+    background: #f8f9fa;
+}
+
+/* Ensure transcript area displays chat bubbles correctly */
+#transcript {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Chat bubble styles */
+.chat-bubble {
+    margin: 5px;
+    padding: 8px;
+    border-radius: 8px;
+    max-width: 70%;
+    word-wrap: break-word;
+}
+
+.chat-bubble.assistant {
+    background-color: #f0f0f0;
+    align-self: flex-start;
+}
+
+.chat-bubble.client {
+    background-color: #d0f0d0;
+    align-self: flex-end;
+}
+
+.chat-label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+/* Timestamp style inside chat bubbles */
+.chat-timestamp {
+    font-size: 0.75em;
+    color: #666;
+    margin-left: 5px;
+}
+
+/* New rule: making chat text smaller */
+.chat-text {
+    font-size: 0.9em;
+}
+
+/* Utility class to toggle visibility */
+.hidden {
+    display: none;
+}
+
+/* Add new CSS rules for message logs styling */
+/* Style message logs in the messageStatus area */
+#messageStatus details {
+    font-size: 0.8em; /* use a smaller font for message logs */
+}
+
+/* Style the summary inside message logs to leave space for a timestamp */
+#messageStatus details summary {
+    position: relative;
+    padding-left: 60px; /* add space to display the timestamp */
+}
+
+/* Insert a small timestamp in front using a pseudo-element */
+#messageStatus details summary::before {
+    content: attr(data-timestamp);
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.75em;
+    color: #666;
+}
+
+/* New styles for the microphone toggle button */
+#toggleMicPlayer {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 5px;
+    padding: 4px 10px;
+    font-size: 24px; /* Suitable size for the microphone icon */
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+#toggleMicPlayer.mic-off {
+    opacity: 0.5;
+}
+
+/* Container to align the audio player and mic button together */
+#audioContainer {
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Updated mic button styles for the element with id="toggleMicPlayer" and class="mic-button" */
+#toggleMicPlayer.mic-button {
+  background-color: #fff;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 50%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+  font-size: 24px; /* Ensures the icon scales properly */
+}
+
+#toggleMicPlayer.mic-button .material-icons {
+  color: #000; /* Icon color set to black for contrast */
+}
+
+#toggleMicPlayer.mic-button:hover {
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+#toggleMicPlayer.mic-button:active {
+  background-color: #e0e0e0;
+}
+
+#toggleMicPlayer.mic-button:focus {
+  outline: none;
+}
+
+/* Optionally style the active state for additional visual feedback */
+#toggleMicPlayer.mic-button.active .material-icons {
+  color: #f00; /* For example: red indicates mic is off */
+}

@@ -1,0 +1,13 @@
+{
+    "terminal.integrated.cwd": "${workspaceFolder}",
+    "python.analysis.extraPaths": ["${workspaceFolder}"],
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.nosetestsEnabled": false,
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "python.poetryPath": "poetry",
+    "python.defaultInterpreterPath": "/Users/dswinsco/Library/Caches/pypoetry/virtualenvs/app-sAtJ4ebB-py3.11/bin/python",
+    "CodeGPT.apiKey": "CodeGPT Plus"
+} 

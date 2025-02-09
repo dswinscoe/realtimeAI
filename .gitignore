@@ -1,0 +1,18 @@
+.env
+
+# Build outputs
+dist/
+build/
+
+# IDE files
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db 
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
