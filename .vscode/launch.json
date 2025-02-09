@@ -7,7 +7,7 @@
             "request": "launch",
             "module": "uvicorn",
             "args": [
-                "app.main:app",
+                "app.server:app",
                 "--reload",
                 "--port",
                 "9090"
@@ -20,7 +20,7 @@
             "name": "Realtime AI Client",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/realtime_client/app/python_client.py",
+            "program": "${workspaceFolder}/realtime_client/app/client.py",
             "console": "integratedTerminal",
             "justMyCode": false
         }

@@ -1,5 +1,5 @@
 """
-python_client.py
+client.py
 
 A Python client that establishes a WebRTC connection to the OpenAI Realtime API,
 captures microphone audio, and prints chat messages received over the data channel.

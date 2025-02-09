@@ -1,4 +1,4 @@
-# realtime_client/app/main.py
+# realtime_client/app/server.py
 from fastapi import FastAPI
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
