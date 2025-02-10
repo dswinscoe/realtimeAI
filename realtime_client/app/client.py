@@ -12,6 +12,7 @@ import logging
 import aiohttp
 import pyaudio
 import numpy as np
+import time
 
 from aiortc import (
     RTCPeerConnection,
@@ -29,7 +30,7 @@ SESSION_ENDPOINT = "http://localhost:9090/session"
 
 
 class PyAudioPlayer:
-    def __init__(self, channels, rate, frames_per_buffer=1024):
+    def __init__(self, channels, rate, frames_per_buffer=512):
         self.p = pyaudio.PyAudio()
         self.channels = channels
         self.rate = rate
@@ -64,7 +65,7 @@ async def run():
 
     # Capture the microphone audio.
     # On Linux you might use format="pulse". On macOS, an alternative is "avfoundation", on Windows "dshow".
-    player = MediaPlayer("none:0", format="avfoundation")
+    player = MediaPlayer("none:default", format="avfoundation")
     if player.audio:
         pc.addTrack(player.audio)
         print("Added local audio track from microphone.")
@@ -82,9 +83,6 @@ async def run():
         print(f"Connection state changed to: {pc.connectionState}")
         if pc.connectionState == "failed":
             await pc.close()
-
-    # Set up reception of remote audio.
-    recorder = None
 
     @pc.on("track")
     async def on_track(track):
@@ -145,8 +143,6 @@ async def run():
     except KeyboardInterrupt:
         print("\nInterrupted by user. Exiting...")
     finally:
-        if recorder:
-            await recorder.stop()
         await pc.close()
 
 
@@ -155,34 +151,35 @@ def handle_data_message(message):
     Process JSON messages received on the data channel.
     The function prints the content in a chat-like format.
     """
+    now = time.time()  # Timestamp for latency monitoring
     try:
         data = json.loads(message)
     except Exception:
-        print("Received non-JSON message:", message)
+        print(f"[{now:.3f}] Received non-JSON message:", message)
         return
 
-    # Similar to the JS client, process different message types.
-    if data.get("type") in ["response.audio_transcript.delta", "response.text.delta"]:
+    event_type = data.get("type")
+    if event_type in ["response.audio_transcript.delta", "response.text.delta"]:
         sender = "Assistant" if data.get("role") != "user" else "Client"
         text = data.get("text", "").strip()
         if text:
-            print(f"{sender}: {text}")
-    elif data.get("type") == "input.audio_transcript.delta":
+            print(f"[{now:.3f}] {sender}: {text}")
+    elif event_type == "input.audio_transcript.delta":
         # Handle transcript of input audio
         text = data.get("text", "").strip()
         if text:
-            print("Client:", text)
-    elif data.get("type") == "response.done":
+            print(f"[{now:.3f}] Client: {text}")
+    elif event_type == "response.done":
         response = data.get("response", {})
         if response.get("output"):
             output = response["output"][0]
             sender = "Assistant" if output.get("role") != "user" else "Client"
             if output.get("type") == "function_call":
                 print(
-                    f"{sender}: Function call detected: {output.get('name')} with arguments: {output.get('arguments')}"
+                    f"[{now:.3f}] {sender}: Function call detected: {output.get('name')} with arguments: {output.get('arguments')}"
                 )
             elif output.get("text"):
-                print(f"{sender}: {output.get('text')}")
+                print(f"[{now:.3f}] {sender}: {output.get('text')}")
             elif output.get("content") and isinstance(output["content"], list):
                 transcript = " ".join(
                     [
@@ -191,17 +188,30 @@ def handle_data_message(message):
                     ]
                 )
                 if transcript.strip():
-                    print(f"\n{sender}: {transcript.strip()}")
+                    print(f"\n[{now:.3f}] {sender}: {transcript.strip()}")
             else:
-                print(f"{sender}: Response received: {json.dumps(response)}")
-    elif data.get("type") in ["session.created", "session.updated"]:
-        print("Status:", data.get("type"))
-    elif data.get("type") in ["invalid_request_error", "error"]:
-        print("Error:", data.get("message"))
-    elif data.get("type") == "message_status":
-        print("Message status:", data.get("status"))
+                print(
+                    f"[{now:.3f}] {sender}: Response received: {json.dumps(response)}"
+                )
+    elif event_type in ["session.created", "session.updated"]:
+        print(f"[{now:.3f}] Status: {event_type}")
+    elif event_type in ["invalid_request_error", "error"]:
+        print(f"[{now:.3f}] Error: {data.get('message')}")
+    elif event_type == "message_status":
+        print(f"[{now:.3f}] Message status: {data.get('status')}")
+    # --- New event handling for additional realtime events ---
+    elif event_type == "input_audio_buffer.speech_started":
+        print(f"[{now:.3f}] Speech started detected.")
+    elif event_type == "input_audio_buffer.speech_stopped":
+        print(f"[{now:.3f}] Speech stopped detected.")
+    elif event_type == "response.audio.delta":
+        # For large audio chunks, printing only the first 50 characters
+        delta = data.get("delta", "")
+        print(f"[{now:.3f}] Audio delta received (base64 snippet): {delta[:50]}...")
+    elif event_type == "response.function_call_arguments.delta":
+        print(f"[{now:.3f}] Function call arguments delta: {data.get('arguments', '')}")
     else:
-        print("Unhandled message:", data)
+        print(f"[{now:.3f}] Unhandled message: {event_type}")
 
 
 if __name__ == "__main__":
