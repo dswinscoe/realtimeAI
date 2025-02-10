@@ -13,6 +13,8 @@ import aiohttp
 import pyaudio
 import numpy as np
 import time
+import speech_recognition as sr  # NEW: For speech recognition functionality
+import threading  # NEW: To run recognition in a background thread
 
 from aiortc import (
     RTCPeerConnection,
@@ -54,6 +56,40 @@ class PyAudioPlayer:
         self.p.terminate()
 
 
+# NEW helper function for speech recognition
+def start_speech_recognition():
+    """
+    Starts speech recognition in a background thread.
+    Recognized speech is printed to the console.
+    """
+    recognizer = sr.Recognizer()
+    mic = sr.Microphone()
+
+    # Adjust for ambient noise to set a suitable energy threshold
+    with mic as source:
+        recognizer.adjust_for_ambient_noise(source)
+    print("Speech Recognition: Calibrated for ambient noise. Ready to listen.")
+
+    def recognition_loop():
+        with mic as source:
+            while True:
+                try:
+                    print("Listening for speech...")
+                    # Listen for a phrase (with a 5-second limit per phrase)
+                    audio = recognizer.listen(source, phrase_time_limit=5)
+                    # Recognize using Google's API (change if needed)
+                    transcript = recognizer.recognize_google(audio)
+                    print(f"\n[{time.time():.3f}] Client: {transcript}\n")
+                except sr.UnknownValueError:
+                    print("Speech Recognition: Could not understand audio.")
+                except sr.RequestError as e:
+                    print(f"Speech Recognition Request error: {e}")
+                except Exception as e:
+                    print(f"Speech Recognition error: {e}")
+
+    threading.Thread(target=recognition_loop, daemon=True).start()
+
+
 async def run():
     # Create the RTCPeerConnection with a basic STUN server
     pc = RTCPeerConnection(
@@ -74,7 +110,14 @@ async def run():
 
     # Create a data channel for receiving realtime messages.
     channel = pc.createDataChannel("oai-events")
-    channel.on("message", lambda message: handle_data_message(message))
+
+    @channel.on("message")
+    async def on_message(message):
+        # If the received message is bytes, decode it using UTF-8.
+        if isinstance(message, bytes):
+            message = message.decode("utf-8")
+        handle_data_message(message)
+
     print("Created data channel 'oai-events'.")
 
     # Log connection state changes.
@@ -134,6 +177,10 @@ async def run():
     answer = RTCSessionDescription(sdp=answer_sdp, type="answer")
     await pc.setRemoteDescription(answer)
     print("WebRTC connection established with remote SDP set.\n")
+
+    # NEW: Start speech recognition in a background thread
+    start_speech_recognition()
+
     print("Listening for realtime messages (press Ctrl+C to exit)...\n")
 
     # Run indefinitely until interrupted.
@@ -188,7 +235,7 @@ def handle_data_message(message):
                     ]
                 )
                 if transcript.strip():
-                    print(f"\n[{now:.3f}] {sender}: {transcript.strip()}")
+                    print(f"\n[{now:.3f}] {sender}: {transcript.strip()}\n")
             else:
                 print(
                     f"[{now:.3f}] {sender}: Response received: {json.dumps(response)}"
