@@ -33,29 +33,29 @@ function appendChatBubble(role, message) {
   if (!message || !message.trim()) {
     return;
   }
-  
+
   const transcriptEl = document.getElementById("transcript");
   if (!transcriptEl) return;
-  
+
   const bubble = document.createElement("div");
   bubble.className = "chat-bubble " + role;
-  
+
   const labelSpan = document.createElement("span");
   labelSpan.className = "chat-label";
   labelSpan.textContent = role === "assistant" ? "Assistant: " : "You: ";
   bubble.appendChild(labelSpan);
-  
+
   const textSpan = document.createElement("span");
   textSpan.className = "chat-text";
   textSpan.textContent = message.trim();
   bubble.appendChild(textSpan);
-  
+
   bubble.appendChild(document.createElement("br"));
   const timestampEl = document.createElement("small");
   timestampEl.className = "chat-timestamp";
   timestampEl.textContent = new Date().toLocaleTimeString();
   bubble.appendChild(timestampEl);
-  
+
   transcriptEl.appendChild(bubble);
   transcriptEl.scrollTop = transcriptEl.scrollHeight;
 }
@@ -63,18 +63,18 @@ function appendChatBubble(role, message) {
 function appendMessageLog(data) {
   const messagesEl = document.getElementById("messageStatus");
   if (!messagesEl) return;
-  
+
   const details = document.createElement("details");
   const summary = document.createElement("summary");
   summary.textContent = "Message: " + data.type;
   // Set the timestamp attribute to show the time when the message log was created.
   summary.setAttribute("data-timestamp", new Date().toLocaleTimeString());
   details.appendChild(summary);
-  
+
   const pre = document.createElement("pre");
   pre.textContent = JSON.stringify(data, null, 2);
   details.appendChild(pre);
-  
+
   messagesEl.appendChild(details);
   messagesEl.scrollTop = messagesEl.scrollHeight; // Ensure the last message is visible
 }
@@ -83,8 +83,9 @@ function appendMessageLog(data) {
 function startSpeechRecognition() {
   // If recognition is already running, do nothing
   if (recognition) return;
-  
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
     console.log("Speech recognition not supported in this browser.");
     return;
@@ -128,12 +129,15 @@ function handleDataMessage(message) {
     console.error("Invalid JSON message:", message);
     return;
   }
-  
+
   // Log full JSON message in the messages section
   appendMessageLog(data);
-  
+
   // Process and display dialog text in the transcript as chat bubbles
-  if (data.type === "response.audio_transcript.delta" || data.type === "response.text.delta") {
+  if (
+    data.type === "response.audio_transcript.delta" ||
+    data.type === "response.text.delta"
+  ) {
     // Determine sender: if a role property exists and is "user", show as client; else assistant.
     let sender = "assistant";
     if (data.role && data.role === "user") {
@@ -141,7 +145,11 @@ function handleDataMessage(message) {
     }
     appendChatBubble(sender, data.text);
   } else if (data.type === "response.done") {
-    if (data.response && data.response.output && data.response.output.length > 0) {
+    if (
+      data.response &&
+      data.response.output &&
+      data.response.output.length > 0
+    ) {
       const output = data.response.output[0];
       // Determine sender based on output.role (default assistant)
       let sender = "assistant";
@@ -149,13 +157,19 @@ function handleDataMessage(message) {
         sender = "client";
       }
       if (output.type === "function_call") {
-        appendChatBubble("assistant", "Function call detected: " + output.name + " with arguments: " + output.arguments);
+        appendChatBubble(
+          "assistant",
+          "Function call detected: " +
+            output.name +
+            " with arguments: " +
+            output.arguments
+        );
       } else if (output.text) {
         appendChatBubble(sender, output.text);
       } else if (output.content && Array.isArray(output.content)) {
         // Extract transcript text from the content array if available
         let transcript = "";
-        output.content.forEach(item => {
+        output.content.forEach((item) => {
           if (item.transcript) {
             transcript += item.transcript + " ";
           } else if (item.text) {
@@ -167,10 +181,16 @@ function handleDataMessage(message) {
           appendChatBubble(sender, transcript);
         }
       } else {
-        appendChatBubble("assistant", "Response: " + JSON.stringify(data.response));
+        appendChatBubble(
+          "assistant",
+          "Response: " + JSON.stringify(data.response)
+        );
       }
     }
-  } else if (data.type === "session.created" || data.type === "session.updated") {
+  } else if (
+    data.type === "session.created" ||
+    data.type === "session.updated"
+  ) {
     updateStatus("Session event: " + data.type);
   } else if (data.type === "invalid_request_error" || data.type === "error") {
     updateStatus("Error: " + data.message);
@@ -186,7 +206,7 @@ async function startWebRTC() {
   const tokenResponse = await fetch("/session");
   const tokenData = await tokenResponse.json();
   const EPHEMERAL_KEY = tokenData.client_secret.value; // Adjust based on your API response structure
-  
+
   updateStatus("Initializing peer connection...");
   // Create the RTCPeerConnection with a basic STUN server
   peerConnection = new RTCPeerConnection({
@@ -284,7 +304,8 @@ function stopWebRTC() {
 
 // Function to initialize the microphone (audio only)
 function initMic() {
-  navigator.mediaDevices.getUserMedia({ audio: true })
+  navigator.mediaDevices
+    .getUserMedia({ audio: true })
     .then((stream) => {
       localStream = stream;
       console.log("Microphone initialized");
@@ -305,18 +326,18 @@ function initMic() {
 function toggleMic() {
   const micButton = document.getElementById("toggleMicPlayer");
   const iconEl = micButton.querySelector(".material-icons");
-  
+
   // Toggle the active class; if active, the mic is muted
   const isMuted = micButton.classList.toggle("active");
   iconEl.textContent = isMuted ? "mic_off" : "mic";
-  
+
   // If there's a valid localStream, disable or enable its audio tracks accordingly
   if (localStream && localStream.getAudioTracks().length > 0) {
-    localStream.getAudioTracks().forEach(track => {
+    localStream.getAudioTracks().forEach((track) => {
       track.enabled = !isMuted;
     });
   }
-  
+
   console.log(isMuted ? "Microphone muted" : "Microphone unmuted");
 }
 
@@ -351,9 +372,17 @@ document.addEventListener("DOMContentLoaded", function () {
   // Buttons for starting/stopping connection and toggling UI panels
   document.getElementById("startBtn").addEventListener("click", startWebRTC);
   document.getElementById("stopBtn").addEventListener("click", stopWebRTC);
-  document.getElementById("toggleTranscriptBtn").addEventListener("click", () => toggleVisibility("transcript"));
-  document.getElementById("toggleMessageStatusBtn").addEventListener("click", () => toggleVisibility("messageStatus"));
-  document.getElementById("toggleOutputAudioBtn").addEventListener("click", toggleOutputAudio);
+  document
+    .getElementById("toggleTranscriptBtn")
+    .addEventListener("click", () => toggleVisibility("transcript"));
+  document
+    .getElementById("toggleMessageStatusBtn")
+    .addEventListener("click", () => toggleVisibility("messageStatus"));
+  document
+    .getElementById("toggleOutputAudioBtn")
+    .addEventListener("click", toggleOutputAudio);
   // Attach new microphone toggle button listener
-  document.getElementById("toggleMicPlayer").addEventListener("click", toggleMic);
+  document
+    .getElementById("toggleMicPlayer")
+    .addEventListener("click", toggleMic);
 });
