@@ -2,8 +2,17 @@
 
 ![Cursor Badge](https://img.shields.io/badge/Built%20with-Cursor-2ea44f?logo=cursor) ![OpenAI Badge](https://img.shields.io/badge/Powered%20by-OpenAI%20o3--mini-412991)
 
+# Realtime AI Assistant with WebRTC
+
+A realtime voice assistant leveraging WebRTC for low-latency communication with OpenAI's realtime API. The system features:
+
+- 🔁 Bidirectional audio streaming using WebRTC media channels
+- 💬 Real-time transcript display with chat-style bubbles
+- 🔐 Ephemeral key authentication for secure sessions
+- 🎚️ Interactive UI controls for audio/video management
+
 **AI-Assisted Development**  
-This entire repository was generated through iterative prompting workflows using [Cursor](https://cursor.sh/) with OpenAI's o3-mini model. The implementation demonstrates practical application of AI pair-programming for complex real-time systems development.
+This entire repository was generated through iterative prompting workflows using [Cursor](https://cursor.sh/) with OpenAI's o3-mini model. The implementation demonstrates practical application of AI pair-programming for complex real-time systems development. See [AI-Assisted Development Flow](/realtime_client/docs/Prompting_history.png), where the green outline prompts indicate refactoring for WebRTC implementation.
 
 A multi-modal client implementation for OpenAI's Realtime API with voice/text interactions via WebRTC and WebSockets.
 
