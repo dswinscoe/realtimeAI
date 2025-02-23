@@ -84,12 +84,12 @@ poetry run flake8
 
 ## Documentation
 
-- [Overview](/docs/realtime_overview.md)
-- [WebRTC Connection Guide](/docs/realtime_connect_with_WebRTC.md)
-- [Model Capabilities](/docs/realtime_model_capabilities.md)
-- [WebSocket Implementation](/docs/reltime_connect_with_Websockets.md)
+- [Overview](/realtime_client/docs/realtime_overview.md)
+- [WebRTC Connection Guide](/realtime_client/docs/realtime_connect_with_WebRTC.md)
+- [Model Capabilities](/realtime_client/docs/realtime_model_capabilities.md)
+- [WebSocket Implementation](/realtime_client/docs/realtime_connect_with_Websockets.md)
 
-**Note:** The `/docs` directory contains unmodified markdown files from OpenAI's public documentation. These are included to provide context for AI-assisted development workflows when using tools like Cursor with o3-mini model.
+**Note:** The `/realtime_client/docs` directory contains unmodified markdown files from OpenAI's public documentation. These are included to provide context for AI-assisted development workflows when using tools like Cursor with o3-mini model.
 
 ## License
 
