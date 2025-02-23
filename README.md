@@ -100,3 +100,35 @@ poetry run flake8
 ## License
 
 MIT Licensed. See [LICENSE](LICENSE) for details.
+
+## Cost Considerations ⚠️
+
+**Important Usage Warning**  
+OpenAI's Realtime API has a complex pricing structure that combines text and audio token costs. Developers should carefully monitor usage due to potentially high expenses:
+
+**Pricing Overview (GPT-4o)**
+
+- 🎙️ Audio Input: $100/million tokens (~$0.06/min)
+- 🔊 Audio Output: $200/million tokens (~$0.24/min)
+- 📝 Text Input: $5/million tokens
+- 📄 Text Output: $20/million tokens
+
+**Real-World Cost Examples**
+
+- 5-minute voice conversation ≈ $5.38
+- 10-minute conversation ≈ $10
+- Heavy testing can exceed $200/day
+
+**Development Recommendations**
+
+1. Implement strict usage monitoring
+2. Set budget alerts in OpenAI dashboard
+3. Use test mode for initial development
+4. Consider cost/performance tradeoffs carefully
+
+> "Pricing would need to decrease 10x for viable commercial implementation" - Developer Community Feedback
+
+**References**  
+[OpenAI Community Discussion](https://community.openai.com/t/realtime-api-extremely-expensive/966825) ·
+[Cost Analysis Article](https://seasalt.ai/blog/openai-chatgpt-realtime-api-cost-breakdown) ·
+[ZDNet Coverage](https://www.zdnet.com/article/openai-lets-developers-build-real-time-voice-apps-at-a-substantial-premium/)
