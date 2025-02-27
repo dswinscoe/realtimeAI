@@ -42,7 +42,7 @@ A multi-modal client implementation for OpenAI's Realtime API with voice/text in
 
 ## Appview
 
-![Appview](/realtime_client/docs/Appview.png)
+![Appview](realtime_client/docs/AppView.png)
 
 ## Installation
 
