@@ -12,7 +12,7 @@ A realtime voice assistant leveraging WebRTC for low-latency communication with 
 - 🎚️ Interactive UI controls for audio/video management
 
 **AI-Assisted Development**  
-This entire repository was generated through iterative prompting workflows using [Cursor](https://cursor.sh/) with OpenAI's o3-mini model in an initial 4-hour session. The implementation demonstrates practical application of AI pair-programming for complex real-time systems development. See [AI-Assisted Development Flow](/realtime_client/docs/Prompting_history.png), where the green-outlined prompts indicate the refactoring from WebSockets to WebRTC for the current browser implementation.
+This entire repository was generated through iterative prompting workflows using [Cursor](https://cursor.sh/) with OpenAI's o3-mini model in an initial 4-hour session (including this README.md!). The implementation demonstrates practical application of AI pair-programming for complex real-time systems development. See [AI-Assisted Development Flow](/realtime_client/docs/Prompting_history.png), where the green-outlined prompts indicate the refactoring from WebSockets to WebRTC for the current browser implementation.
 
 A multi-modal client implementation for OpenAI's Realtime API with voice/text interactions via WebRTC and WebSockets.
 
