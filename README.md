@@ -40,6 +40,10 @@ A multi-modal client implementation for OpenAI's Realtime API with voice/text in
 - Function calling support
 - Audio input/output device management
 
+## Appview
+
+![Appview](realtime_client/docs/Appview.png)
+
 ## Installation
 
 ### Prerequisites
