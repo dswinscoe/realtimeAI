@@ -108,7 +108,7 @@ poetry run flake8
 - [WebSocket Implementation](/realtime_client/docs/realtime_connect_with_Websockets.md)
 - [AI Development Process](/realtime_client/docs/ai_development_process.md)
 
-**Note:** The `/realtime_client/docs` directory contains unmodified markdown files from OpenAI's public documentation and a new file documenting the AI-assisted development process. These resources provide context for AI-assisted development workflows when using tools like Cursor with o3-mini model.
+**Note:** The `/realtime_client/docs` directory contains unmodified markdown files from OpenAI's public documentation and a new file documenting the AI-assisted development process. These resources provided valuable context for the project's implementation, and were used as a foundation for the above AI-assisted development workflow with Cursor and the o3-mini model.
 
 ## License
 
