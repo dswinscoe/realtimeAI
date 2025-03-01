@@ -1,7 +1,7 @@
 # OpenAI Realtime API Client
 
 ![Cursor Badge](https://img.shields.io/badge/Built%20with-Cursor-2ea44f?logo=cursor)
-![OpenAI Badge](https://img.shields.io/badge/Generated%20by-OpenAI%20o3--mini-412991)
+![OpenAI Badge](https://img.shields.io/badge/Generated%20by-o3--mini-412991?logo=OpenAI)
 [![Powered by GPT-4o Realtime Preview](https://img.shields.io/badge/Powered%20by-GPT--4o_Realtime_Preview-blue?logo=OpenAI)](https://openai.com)
 
 # Realtime AI Assistant with WebRTC
