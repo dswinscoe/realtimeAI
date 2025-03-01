@@ -57,7 +57,7 @@ A multi-modal client implementation for OpenAI's Realtime API with voice/text in
 
 ```bash
 # Clone repository
-git https://github.com/dswinscoe/realtimeAI.git
+git clone https://github.com/dswinscoe/realtimeAI.git
 cd realtimeAI/realtime_client
 
 # Install project dependencies
