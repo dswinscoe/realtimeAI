@@ -64,6 +64,9 @@ poetry install
 # Configure environment
 cp .env.example .env
 nano .env  # Add your OpenAI API key
+
+### VS Code Launch Realtime Server
+For VS Code / Cursor users, a launch configuration is included. Simply open the project in VS Code, go to the Debug view, and select the 'Launch Realtime Server' configuration to start the server effortlessly.
 ```
 
 ## Usage
